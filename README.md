@@ -30,6 +30,13 @@ constructs.
 
 # Getting started with Pyctr
 
+## Install locally
+
+```shell
+$ git clone https://github.com/Angelogeb/pyctr.git && cd pyctr
+$ pip install -e .
+```
+
 ## Background
 
 Pyctr is a Python code transformation library currently distributed as a part of
