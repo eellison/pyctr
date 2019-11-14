@@ -28,6 +28,11 @@ from pyctr.sct import transformer
 import six
 
 
+class PyctrReturnException(Exception):
+    def __init__(self, ret_val):
+        self.ret_val = ret_val
+
+
 def _transform(source, ctx, overload, transformers):
   for tr in transformers:
     source = apply_(source, ctx, tr, overload)
@@ -144,6 +149,8 @@ def convert(func, overload_module, transformers):
       arg_values=None,
       arg_types={},
       owner_type=None)
+
+  overload_module.PyctrReturnException = PyctrReturnException
 
   namer = naming.Namer(entity_info.namespace)
   ctx = transformer.EntityContext(namer, entity_info)

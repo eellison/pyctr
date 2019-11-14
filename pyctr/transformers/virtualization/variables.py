@@ -76,9 +76,15 @@ class VariableTransformer(transformer.Base):
     if self.scope.parent and self.scope.parent.is_local(node.name):
       template = """
         def new_fun_name(args):
-          inits
-          arg_nodes
-          body
+          try:
+
+            inits
+            arg_nodes
+            body
+
+          except overload.PyctrReturnException as e:
+            return e.ret_val
+
         overload.assign(fun_name, new_fun_name)
       """
 
@@ -95,9 +101,14 @@ class VariableTransformer(transformer.Base):
     else:
       template = """
         def fun_name(args):
-          inits
-          arg_nodes
-          body
+          try:
+
+            inits
+            arg_nodes
+            body
+
+          except overload.PyctrReturnException as e:
+            return e.ret_val
       """
 
       node = templates.replace(
