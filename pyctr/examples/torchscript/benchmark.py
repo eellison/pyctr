@@ -1,7 +1,7 @@
 import torch
 
-import torchscript
-from torchscript_test import random_inputs_torch
+from pyctr.examples.torchscript import torchscript
+from pyctr.examples.torchscript.torchscript_test import random_inputs_torch
 
 
 def rnn_basic(ins, seq_len, w, b, init_state):
@@ -13,6 +13,18 @@ def rnn_basic(ins, seq_len, w, b, init_state):
         h = torch.cat((x, state), 1)
         state = torch.tanh(h @ w + b)  # Basic RNN cell
     return state
+
+
+def rnn_basic(w, seq, training: bool):
+    ret = seq[0]
+    for i in range(len(seq)):
+        ret = torch.tanh(w @ torch.cat([seq[i], ret], dim=0))
+        if training:
+            ret = torch.dropout(ret, 0.5, training)
+    return ret
+
+
+training = True
 
 
 if __name__ == "__main__":

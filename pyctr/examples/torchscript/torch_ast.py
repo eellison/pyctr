@@ -4,6 +4,7 @@ A solution to this can be to add an additional variable passed to `overload.call
 `overload.assign` etc. that can be used to manage this state.
 """
 from contextlib import contextmanager
+
 _ast = []
 
 

@@ -1,12 +1,9 @@
+import numpy as np
+import torch
 from absl.testing import absltest as test
 from absl.testing import parameterized
 
-import numpy as np
-
-import torch
-
-
-from torchscript import specialize
+from pyctr.examples.torchscript.torchscript import specialize
 
 
 def random_inputs_numpy(batch_size, max_seq_len, input_size, hidden_size):

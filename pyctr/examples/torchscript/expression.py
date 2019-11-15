@@ -1,6 +1,14 @@
-from torch._C._jit_tree_views import *
+from torch._C._jit_tree_views import (
+    BinOp,
+    Const,
+    Expr,
+    FalseLiteral,
+    Subscript,
+    TrueLiteral,
+    TupleLiteral,
+)
 
-from dmmy import dmmy_rng
+from pyctr.examples.torchscript.dmmy import dmmy_rng
 from pyctr.overloads import py_defaults
 
 

@@ -1,8 +1,8 @@
 import torch
-from torch._C._jit_tree_views import *
+from torch._C._jit_tree_views import Apply, Attribute, Ident, Select, Var
 
-from dmmy import dmmy_rng
-from expression import Rep, torch_expr
+from pyctr.examples.torchscript.dmmy import dmmy_rng
+from pyctr.examples.torchscript.expression import Rep, torch_expr
 from pyctr.overloads import py_defaults, staging
 
 
@@ -43,17 +43,9 @@ class TorchCallOverload:
             self._registry[id(fun)] = generate_fun_for(name)
 
 
-torch_call = TorchCallOverload([
-    "cat",
-    "sigmoid",
-    "transpose",
-    "relu",
-    "max",
-    "tanh",
-    "matmul",
-    "mm",
-    "add"
-])
+torch_call = TorchCallOverload(
+    ["cat", "sigmoid", "transpose", "relu", "max", "tanh", "matmul", "mm", "add"]
+)
 
 
 builtin_call = staging.RewritingCallOverload(py_defaults.call)

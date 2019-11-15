@@ -4,17 +4,26 @@ import sys
 from textwrap import dedent
 
 import torch
-from torch._C._jit_tree_views import *
+from torch._C._jit_tree_views import (
+    Assign,
+    Decl,
+    Def,
+    For,
+    Ident,
+    If,
+    Return,
+    TupleLiteral,
+    Var,
+)
 from torch.jit.frontend import SourceContext
 
-import call_helper
-from dmmy import ctx, dmmy_rng
-from expression import Rep, torch_expr
 from pyctr.api import conversion
+from pyctr.examples.torchscript import call_helper
+from pyctr.examples.torchscript.dmmy import ctx, dmmy_rng
+from pyctr.examples.torchscript.expression import Rep, torch_expr
+from pyctr.examples.torchscript.torch_ast import emit_node, flush_ast, fresh_ast
 from pyctr.overloads import py_defaults
-from pyctr.transformers.virtualization import (control_flow, functions,
-                                               variables)
-from torch_ast import emit_node, flush_ast, fresh_ast
+from pyctr.transformers.virtualization import control_flow, functions, variables
 
 tch_ir_ = sys.modules[__name__]
 
@@ -137,5 +146,3 @@ def specialize(fn, *args):
     statements = converted_fn(*args)
     fn, ast = tch_ir_.wrap_ast(fn, statements)
     return fn, ast
-
-
