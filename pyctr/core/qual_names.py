@@ -197,7 +197,7 @@ class QN(object):
 
     base = self.qn[0]
     if isinstance(base, str):
-      return gast.Name(base, None, None)
+      return gast.Name(id=base, ctx=None, annotation=None, type_comment=None)
     elif isinstance(base, StringLiteral):
       return gast.Str(base.value)
     elif isinstance(base, NumberLiteral):

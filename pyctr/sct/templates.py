@@ -204,7 +204,7 @@ def _convert_to_ast(n):
   if isinstance(n, str):
     # Note: the node will receive the ctx value from the template, see
     # ReplaceTransformer.visit_Name.
-    return gast.Name(id=n, ctx=None, annotation=None)
+    return gast.Name(id=n, ctx=None, annotation=None, type_comment=None)
   if isinstance(n, qual_names.QN):
     return n.ast()
   if isinstance(n, list):
