@@ -86,8 +86,9 @@ class ContextAdjuster(gast.NodeTransformer):
     return self.generic_visit(node)
 
   def visit_Subscript(self, node):
+    self._apply_override(node)
+    self._ctx_override = gast.Load
     node.value = self.visit(node.value)
-    self._ctx_override = None
     return self.generic_visit(node)
 
 

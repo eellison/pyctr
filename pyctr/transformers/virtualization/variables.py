@@ -125,6 +125,7 @@ class VariableTransformer(transformer.Base):
 
   def visit_Assign(self, node):
     # TODO(b/123943188): Handle multiple assignment
+    fields = {field: getattr(node, field) for field in dir(node)}
     node.value = self.visit(node.value)
 
     lhs = node.targets[0].id

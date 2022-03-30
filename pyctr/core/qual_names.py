@@ -226,27 +226,30 @@ class QnResolver(gast.NodeTransformer):
     return node
 
   def visit_Subscript(self, node):
-    # TODO(mdanatg): This may no longer apply if we overload getitem.
+    # TODO(mdan): This may no longer apply if we overload getitem.
     node = self.generic_visit(node)
     s = node.slice
-    if not isinstance(s, gast.Index):
-      # TODO(mdanatg): Support range and multi-dimensional indices.
+    if isinstance(s, (gast.Tuple, gast.Slice)):
+      # assert False here ?
+      # TODO(mdan): Support range and multi-dimensional indices.
       # Continuing silently because some demos use these.
       return node
-    if isinstance(s.value, gast.Num):
-      subscript = QN(NumberLiteral(s.value.n))
-    elif isinstance(s.value, gast.Str):
-      subscript = QN(StringLiteral(s.value.s))
+    if isinstance(s, gast.Constant) and s.value != Ellipsis:
+      if isinstance(s.value, (int, float)):
+        subscript = QN(NumberLiteral(s.value))
+      else:
+        assert isinstance(s.value, str)
+        subscript = QN(StringLiteral(s.value))
     else:
       # The index may be an expression, case in which a name doesn't make sense.
-      if anno.hasanno(node.slice.value, anno.Basic.QN):
-        subscript = anno.getanno(node.slice.value, anno.Basic.QN)
+      if anno.hasanno(s, anno.Basic.QN):
+        subscript = anno.getanno(s, anno.Basic.QN)
       else:
         return node
     if anno.hasanno(node.value, anno.Basic.QN):
-      anno.setanno(
-          node, anno.Basic.QN,
-          QN(anno.getanno(node.value, anno.Basic.QN), subscript=subscript))
+      anno.setanno(node, anno.Basic.QN,
+                   QN(anno.getanno(node.value, anno.Basic.QN),
+                      subscript=subscript))
     return node
 
 

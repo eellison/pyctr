@@ -151,7 +151,6 @@ def convert(func, overload_module, transformers):
       owner_type=None)
 
   overload_module.PyctrReturnException = PyctrReturnException
-
   namer = naming.Namer(entity_info.namespace)
   ctx = transformer.EntityContext(namer, entity_info)
   overload_name = ctx.namer.new_symbol('overload', set())
@@ -159,6 +158,7 @@ def convert(func, overload_module, transformers):
 
   source = _transform(source, ctx, overload, transformers)
   gen_func = _wrap_in_generator(func, source, namer, overload)
+  import pdb; pdb.set_trace()
   gen_func = _attach_closure(func, gen_func)
   return gen_func
 

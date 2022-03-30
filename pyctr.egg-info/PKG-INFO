@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: pyctr
+Version: 0.1
+Summary: Virtualization and source code transformation engine for Python
+Home-page: https://github.com/google/pyctr
+Author: Pyctr team
+Author-email: UNKNOWN
+License: Apache-2.0
+Description: UNKNOWN
+Platform: UNKNOWN
