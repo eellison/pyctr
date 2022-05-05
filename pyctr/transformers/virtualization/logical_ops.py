@@ -74,6 +74,35 @@ class LogicalOpTransformer(transformer.Base):
 
     return node
 
+  def visit_Raise(self, node):
+    self.generic_visit(node)
+    if getattr(node.exc.func, "attr", None) == 'PyctrReturnException':
+      return node
+    template = """
+      overload.raise_stmt(msg)
+    """
+    return templates.replace(template, msg="'Temporary msg'")
+
+  # TODO: this should be in its own transformer
+  def visit_Assert(self, node):
+    self.generic_visit(node)
+
+    # Note: The lone tf.Assert call will be wrapped with control_dependencies
+    # by side_effect_guards.
+    template = """
+      overload.assert_stmt(test, lambda: msg)
+    """
+
+    if node.msg is None:
+      return templates.replace(
+          template,
+          test=node.test,
+          msg=gast.Constant('Assertion error', kind=None))
+    elif isinstance(node.msg, gast.Constant):
+      return templates.replace(template, test=node.test, msg=node.msg)
+    else:
+      raise NotImplementedError('can only convert string messages for now.')
+
   def visit_UnaryOp(self, node):
     if isinstance(node.op, gast.Not) and hasattr(self.overload.module, 'not_'):
       return self._overload_Not(node)

@@ -10,7 +10,7 @@ setup(
     author='Pyctr team',
     author_email='',  # TODO Add author email,
     packages=find_packages(),
-    install_requires=['gast<=0.2.2', 'astor<=0.8', 'absl-py', 'termcolor'],
+    install_requires=['gast<=0.5', 'astor', 'absl-py', 'termcolor'],
     url='https://github.com/google/pyctr',
     license='Apache-2.0',
 )
